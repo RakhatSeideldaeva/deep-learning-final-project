@@ -1,0 +1,80 @@
+Week 2 Report
+
+ What I did this week
+
+1. Data preprocessing
+
+I cleaned and prepared the data for training.
+
+What I did:
+- Normalized each sensor channel (mean = 0, std = 1)
+- Split data into train (70%), validation (15%), test (15%)
+- Made sure same person is not in both train and test
+
+Code file: `src/preprocessing.py`
+
+Results:
+| Set | Samples |
+|-----|---------|
+| Train | 6,384 |
+| Validation | 1,368 |
+| Test | 1,368 |
+
+2. Baseline model (Random Forest)
+
+I trained a simple Random Forest to compare with deep learning later.
+
+Parameters:
+- 100 trees
+- Random state = 42
+
+Results on test set:
+
+| Metric | Score |
+|--------|-------|
+| Accuracy | 84.2% |
+| F1-score (macro) | 0.83 |
+
+Confusion matrix findings:
+- Easy activities: sitting, standing, lying (95%+ accuracy)
+- Hard activities: stairs up vs stairs down (confused 15% of time)
+- Running and walking are never confused
+
+ 3. Made plots
+
+I saved these plots in `results/` folder:
+- Confusion matrix for Random Forest
+- Feature importance (top 10 sensors)
+- Train/val split distribution
+
+Problems I had
+
+1.Normalization - Different people have different signal ranges. I normalized per channel, not per person.
+
+2. Data leakage - At first I split randomly. Some people appeared in train AND test. That is bad because model would recognize the person, not the activity. I fixed it by splitting by subject ID.
+
+ Commits this week
+
+| Day | What I did |
+|-----|------------|
+| Mon | Wrote preprocessing code (normalization, split) |
+| Tue | Fixed data leakage bug |
+| Wed | Trained Random Forest baseline |
+| Thu | Made confusion matrix and plots |
+| Fri | Wrote week-02.md report |
+
+Total commits this week:6
+
+ Results so far
+
+Baseline accuracy: 84.2%
+
+This is good. Deep learning should do better (>90%).
+
+Plan for next week
+
+- Build 1D CNN model
+- Build LSTM model
+- Train both and compare
+- Plot loss curves
+
