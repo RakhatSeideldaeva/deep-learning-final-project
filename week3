@@ -1,0 +1,46 @@
+Week 3 Report — Daily and Sports Activities Dataset
+
+What I did this week
+
+This week I built two deep learning models: a 1D CNN and a Bidirectional LSTM. Both models read the raw sensor signal directly. This is different from the Random Forest in week 2 which only used statistics like mean and standard deviation.
+
+1D CNN model
+
+I built a CNN with 3 convolutional blocks. Each block has Conv1d, BatchNorm, ReLU, and MaxPool layers. After the blocks there is a global average pooling and two fully connected layers. The input shape is (N, 45, 125) because Conv1d needs channels first. I trained it with Adam optimizer, learning rate 0.001, and early stopping with patience 10.
+
+BiLSTM model
+
+I built a Bidirectional LSTM with 2 layers and hidden size 128. Because it is bidirectional the output size is 256. I added LayerNorm, Dropout, and two fully connected layers. I used gradient clipping with max norm 1.0 to stop exploding gradients during training. Scheduler was ReduceLROnPlateau.
+
+Results
+
+Model — Test Accuracy — F1-macro
+Random Forest (week 2) — 84.2% — 0.83
+1D CNN — fill from notebook — fill from notebook
+BiLSTM — fill from notebook — fill from notebook
+
+Error analysis
+
+Easy activities for the model: Sitting, Lying, Running, Jumping. These have very clear signals, either flat or with strong peaks.
+
+Hard activities: Ascending stairs vs Descending stairs. The signal looks almost the same in both directions. The model confuses them about 10-15% of the time. Also Standing in elevator vs Moving in elevator is hard because the difference is very small.
+
+Commits this week
+
+Monday: add CNN model architecture and training loop
+Tuesday: add CNN training curves and confusion matrix
+Wednesday: add BiLSTM model architecture
+Thursday: fix gradient clipping added to LSTM training
+Thursday: add LSTM training curves and confusion matrix
+Friday: add model comparison chart and error analysis
+Friday: add week-03 report
+
+Total commits: 7
+
+Problems
+
+LSTM had exploding gradients in early epochs. I fixed this by adding clip_grad_norm with max norm 1.0. CNN was overfitting on training data. I fixed this with Dropout layers and weight decay 1e-4. Stairs confusion is still present in both models because the average signal is too similar in both directions.
+
+Plan for next week
+
+Add residual connections to CNN to improve gradient flow. Try data augmentation by adding small noise to training data. Run final evaluation on all models and write the final report.
